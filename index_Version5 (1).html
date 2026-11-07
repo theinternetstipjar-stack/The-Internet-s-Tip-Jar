@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Internet's Tip Jar</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      color: #382d29;
+      background: #fff8eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 20% 15%, #fff 0 8%, transparent 30%),
+        linear-gradient(145deg, #fff8eb, #ffe5d4);
+    }
+
+    main {
+      width: min(100%, 520px);
+      padding: 32px 24px;
+      text-align: center;
+      background: #ffffffc9;
+      border: 1px solid #fff;
+      border-radius: 28px;
+      box-shadow: 0 18px 50px #70482a1c;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 8vw, 3rem);
+      letter-spacing: -0.05em;
+    }
+
+    .intro {
+      color: #78645b;
+      line-height: 1.6;
+    }
+
+    .jar-stage {
+      position: relative;
+      width: 220px;
+      height: 270px;
+      margin: 24px auto 10px;
+    }
+
+    .jar-lid {
+      position: absolute;
+      z-index: 3;
+      top: 28px;
+      left: 48px;
+      width: 124px;
+      height: 20px;
+      border: 3px solid #b68b61;
+      border-radius: 8px;
+      background: linear-gradient(#e9c99e, #d6ad7e);
+    }
+
+    .jar-slot {
+      position: absolute;
+      z-index: 4;
+      top: 34px;
+      left: 100px;
+      width: 20px;
+      height: 5px;
+      border-radius: 5px;
+      background: #775638;
+    }
+
+    .jar {
+      position: absolute;
+      top: 43px;
+      left: 30px;
+      width: 160px;
+      height: 205px;
+      overflow: hidden;
+      border: 5px solid #91c9c4;
+      border-top: 0;
+      border-radius: 22px 22px 35px 35px;
+      background: linear-gradient(90deg, #d8f6f0a8, #ffffff70 45%, #bce7e1a8);
+      box-shadow:
+        inset 12px 0 16px #fff9,
+        inset -10px 0 16px #72aaa533;
+    }
+
+    .jar::before {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 10px;
+      width: 8px;
+      height: 80%;
+      border-radius: 8px;
+      background: #ffffffa8;
+      pointer-events: none;
+    }
+
+    .jar-label {
+      position: absolute;
+      z-index: 1;
+      top: 95px;
+      left: 50%;
+      width: 105px;
+      padding: 10px 5px;
+      transform: translateX(-50%) rotate(-4deg);
+      border: 2px dashed #e6a678;
+      border-radius: 10px;
+      background: #fff8e9e8;
+      color: #8c5947;
+      font-size: 0.8rem;
+      font-weight: 800;
+      pointer-events: none;
+    }
+
+    .coin {
+      position: absolute;
+      z-index: 2;
+      top: -40px;
+      left: 50%;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 3px solid #d59a22;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #fff2a1, #ffc83d 65%, #e8a51a);
+      color: #9a6412;
+      font-weight: 900;
+      box-shadow: 0 3px 0 #b87915;
+      transform: translateX(-50%);
+      animation: coin-drop 850ms cubic-bezier(.45, 0, .7, 1) forwards;
+    }
+
+    @keyframes coin-drop {
+      0% {
+        top: -40px;
+        transform: translateX(-50%) rotate(0) scale(.8);
+      }
+      55% {
+        top: 85px;
+        transform: translateX(-50%) rotate(300deg) scale(1);
+      }
+      75% {
+        top: 125px;
+        transform: translateX(-50%) rotate(390deg) scale(1);
+      }
+      100% {
+        top: 150px;
+        transform: translateX(-50%) rotate(520deg) scale(.9);
+      }
+    }
+
+    .quote {
+      min-height: 3.2em;
+      margin: 18px 0;
+      color: #765443;
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .preview-button {
+      border: 0;
+      border-radius: 999px;
+      padding: 13px 20px;
+      background: #f27b55;
+      color: white;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #cc5d3d;
+    }
+
+    .preview-button:hover {
+      background: #e96d48;
+    }
+
+    .preview-button:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #cc5d3d;
+    }
+
+    .hint {
+      margin: 12px 0 0;
+      color: #897a70;
+      font-size: 0.85rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>The Very Serious Money Jar</h1>
+    <p class="intro">
+      A jar. A coin. A scientific question of questionable importance.
+    </p>
+
+    <div class="jar-stage" id="jarStage" aria-hidden="true">
+      <div class="jar-lid"></div>
+      <div class="jar-slot"></div>
+      <div class="jar" id="jar">
+        <div class="jar-label">IMPORTANT<br />JAR BUSINESS</div>
+      </div>
+    </div>
+
+    <p class="quote" id="quote" aria-live="polite">
+      The jar is empty, but its hopes are structurally sound.
+    </p>
+
+    <button class="preview-button" id="previewButton" type="button">
+      Preview the coin drop
+    </button>
+    <p class="hint">Preview only — this button does not take a payment.</p>
+  </main>
+
+  <script>
+    const quotes = [
+      "A little kindness can travel further than you think.",
+      "Small beginnings still count as beginnings.",
+      "Never underestimate the power of trying again.",
+      "Your next chapter doesn't need permission to begin.",
+      "Good things sometimes arrive in unexpected packages.",
+      "Keep going. Even slow progress is progress.",
+      "The world is better when we leave a little kindness behind.",
+      "Somewhere, someone needs the encouragement you once needed.",
+      "A little hope can make an ordinary day extraordinary.",
+      "Don't let a difficult chapter convince you it's the whole story.",
+      "The jar has no financial advice. It barely has financial literacy.",
+      "Well, look at you, making questionable internet decisions.",
+      "Your generosity has been noted by absolutely nobody important. But thank you!",
+      "This jar is now emotionally invested in your success.",
+      "The coins are getting along swimmingly.",
+      "If coins could talk, this one would say hello.",
+      "Your bank balance may have noticed your kindness.",
+      "The jar would clap, but it has no hands.",
+      "Somebody call the internet. We have a generous person.",
+      "This is probably the most unusual thing you've done today.",
+      "Behind this little jar is a story still being written.",
+      "Some of the best things begin with a curious question.",
+      "A stranger on one side. A stranger on the other. A little connection in between.",
+      "Not every mystery needs solving.",
+      "Somewhere in the world, the Keeper is smiling.",
+      "The internet is full of strangers. Occasionally, that's a beautiful thing.",
+      "One little coin. One unexpected moment.",
+      "Perhaps kindness is the internet's best-kept secret.",
+      "You found this jar for a reason. Or perhaps the algorithm has jokes.",
+      "The Keeper knows very little about the internet. Except that it can be wonderful.",
+      "Every big idea once looked a little ridiculous.",
+      "Dream boldly. Start small. Keep showing up.",
+      "The future is built from tiny decisions.",
+      "Some adventures begin with a simple question.",
+      "Never be embarrassed about wanting more from life.",
+      "A little courage can change the direction of a whole journey.",
+      "Big dreams don't always need big beginnings.",
+      "Here's to the things we haven't achieved yet.",
+      "The best stories often start unexpectedly.",
+      "One day, you'll look back and smile at where it all began.",
+      "The jar has been practising gratitude. Its financial planning still needs work.",
+      "You've stumbled upon a jar with unrealistic ambitions. Relatable, isn't it?",
+      "No pressure, but the jar has been making eyes at your spare change.",
+      "The Keeper would like to remind you that scrolling is free. So is leaving. Just saying.",
+      "This jar has more dreams than coins. At least we're consistent.",
+      "The Keeper checked the balance. The optimism remains untouched.",
+      "You came, you saw, you considered contributing. What a journey!",
+      "The jar promises not to spend your contribution on tiny gold sunglasses. Probably.",
+      "If curiosity paid rent, this website would be thriving.",
+      "You don't need to have everything figured out to take the first step.",
+      "Sometimes the smallest act becomes someone's favourite memory.",
+      "Give yourself credit for the things nobody else sees.",
+      "There is still room for wonderful things to happen.",
+      "A little kindness is never a little thing.",
+      "Don't underestimate what one brave decision can set in motion.",
+      "You are allowed to begin again, as many times as you need.",
+      "Even the longest journey is made of ordinary little steps.",
+      "Let your dreams be bigger than your fear of looking silly.",
+      "May you always find a reason to believe tomorrow can be better."
+    ];
+
+    const jar = document.getElementById("jar");
+    const quoteElement = document.getElementById("quote");
+    const previewButton = document.getElementById("previewButton");
+
+    let previousQuoteIndex = -1;
+    let coinCount = 0;
+
+    function chooseQuote() {
+      if (quotes.length === 1) {
+        return quotes[0];
+      }
+
+      let index;
+      do {
+        index = Math.floor(Math.random() * quotes.length);
+      } while (index === previousQuoteIndex);
+
+      previousQuoteIndex = index;
+      return quotes[index];
+    }
+
+    function paymentSucceeded(amount) {
+      const coin = document.createElement("span");
+      coin.className = "coin";
+      coin.textContent = "$";
+      jar.appendChild(coin);
+
+      const numericAmount = Number(amount);
+      const amountText = Number.isFinite(numericAmount) && numericAmount > 0
+        ? ` (${new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD"
+          }).format(numericAmount)} received.)`
+        : "";
+
+      quoteElement.textContent = `${chooseQuote()}${amountText}`;
+
+      coin.addEventListener("animationend", () => {
+        coinCount += 1;
+
+        // Leave each coin in the jar after it lands.
+        const column = (coinCount - 1) % 3;
+        const row = Math.floor((coinCount - 1) / 3);
+        coin.style.animation = "none";
+        coin.style.left = `${18 + column * 42}px`;
+        coin.style.top = `${150 - row * 22}px`;
+        coin.style.transform = "none";
+      }, { once: true });
+    }
+
+    // Demo only; this does not process a real payment.
+    previewButton.addEventListener("click", () => paymentSucceeded());
+
+    // Call this from your payment-confirmation code after a successful payment.
+    window.paymentSucceeded = paymentSucceeded;
+  </script>
+</body>
+</html>
