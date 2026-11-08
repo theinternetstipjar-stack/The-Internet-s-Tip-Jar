@@ -77,6 +77,48 @@ if (
   ]);
   return reply({status:"COMPLETED"});
 }
+
+async function verifyCapture(env, cap, orderId) {
+  if (!env.PAYPAL_MERCHANT_ID || !cap?.id || !orderId) {
+    return false;
+  }
+
+  const saved = await env.DB.prepare(
+    "SELECT * FROM paypal_orders WHERE order_id = ?"
+  ).bind(orderId).first();
+
+  if (!saved || saved.status === "REFUNDED" ||
+      saved.status === "REVERSED") {
+    return false;
+  }
+
+  const order = await pp(
+    env,
+    `/v2/checkout/orders/${encodeURIComponent(orderId)}`
+  );
+
+  const units = order.purchase_units || [];
+
+  if (
+    order.id !== orderId ||
+    units.length !== 1 ||
+    units[0].payee?.merchant_id !== env.PAYPAL_MERCHANT_ID
+  ) {
+    return false;
+  }
+
+  const captures = units[0].payments?.captures || [];
+
+  return captures.some(c =>
+    c.id === cap.id &&
+    c.status === "COMPLETED" &&
+    c.amount?.currency_code === saved.currency &&
+    c.amount?.value === saved.expected_amount &&
+    cap.amount?.currency_code === saved.currency &&
+    cap.amount?.value === saved.expected_amount
+  );
+}
+
 async function webhook(request, event, env) {
   if (!env.PAYPAL_WEBHOOK_ID) throw new Error("Webhook ID missing");
   const h=request.headers;
