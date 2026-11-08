@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS paypal_orders (
+ order_id TEXT PRIMARY KEY, expected_amount TEXT NOT NULL, currency TEXT NOT NULL,
+ status TEXT NOT NULL DEFAULT 'CREATED', capture_id TEXT,
+ created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, captured_at TEXT
+);
+CREATE TABLE IF NOT EXISTS processed_webhooks (
+ event_id TEXT PRIMARY KEY, event_type TEXT NOT NULL,
+ processed_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS contributions (
+ capture_id TEXT PRIMARY KEY, amount TEXT NOT NULL, currency TEXT NOT NULL,
+ created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

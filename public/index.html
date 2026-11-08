@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Internet's Tip Jar</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main>
+    <h1>The Internet's Tip Jar</h1>
+    <div class="intro">
+      <p>The Internet's Tip Jar is an independent social experiment exploring the power of voluntary generosity.</p>
+      <p>No products, services, subscriptions or rewards are offered. Contributions are entirely optional and support this privately run internet project.</p>
+      <p>Not a registered charity or nonprofit fundraiser. Thank you for being part of the experiment! 🫙</p>
+    </div>
+
+    <div class="jar-stage" id="jarStage" aria-hidden="true">
+      <div class="jar-lid"></div>
+      <div class="jar-slot"></div>
+      <div class="jar" id="jar">
+        <div class="jar-fill" id="jarFill"></div>
+        <div class="jar-label">THE<br />WONDER JAR</div>
+      </div>
+    </div>
+
+    <p class="quote" id="quote" aria-live="polite">
+      The jar is empty, but its hopes are structurally sound.
+    </p>
+
+    <a
+      class="paypal-button"
+      id="paypalButton"
+      href="https://www.paypal.com/ncp/payment/UMECUBVXX583Y"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Drop a coin in
+    </a>
+    <p class="hint" id="paymentHint" aria-live="polite">PayPal checkout is separate; the jar fills after contributions are verified.</p>
+  </main>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
