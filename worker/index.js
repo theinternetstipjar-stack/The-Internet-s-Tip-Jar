@@ -109,7 +109,11 @@ export default { async fetch(request,env) {
     if(request.method==="POST" && m) return captureOrder(m[1],env);
     if(request.method==="POST" && u.pathname==="/api/paypal/webhook") return webhook(request,await request.json(),env);
     if(request.method==="GET" && u.pathname==="/api/public/jar-progress") {
-      const row=await env.DB.prepare("SELECT COUNT(*) AS total FROM contributions").first();
+      
+const row = await env.DB.prepare(
+  "SELECT COUNT(*) AS total FROM contributions WHERE status = 'COMPLETED'"
+).first();
+
       return reply({verifiedContributionCount:Number(row?.total||0)});
     }
     return env.ASSETS.fetch(request);
