@@ -300,16 +300,13 @@ async function captureOrder(id, env) {
     return reply({ error: "Unknown order" }, 404);
   }
 
-  if (
-    [
-      "COMPLETED",
-      "PARTIALLY_REFUNDED",
-      "REFUNDED",
-      "REVERSED"
-    ].includes(saved.status)
-  ) {
-    return reply({ status: saved.status });
+  
+  if (capture.status !== "COMPLETED") {
+    return {
+      status: capture.status || "PENDING"
+    };
   }
+
 
   const order = await pp(
     env,
