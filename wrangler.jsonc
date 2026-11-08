@@ -11,7 +11,7 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "the-internets-tip-jar",
+      "database_name": "tip-jar-db",
       "database_id": "92535257-7249-45b6-b72c-ea008ed5ae45",
       "migrations_dir": "migrations"
     }
