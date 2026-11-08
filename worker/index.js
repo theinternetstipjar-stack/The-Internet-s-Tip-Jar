@@ -366,9 +366,20 @@ async function processRefund(env, event) {
     throw new Error("Refund not confirmed");
   }
 
+  
+  const captureLink = refund.links?.find(link =>
+    link.rel === "up" &&
+    /^https:\/\/api-m\.sandbox\.paypal\.com\/v2\/payments\/captures\/[A-Za-z0-9_-]+$/.test(link.href)
+  );
+
+  const linkedCaptureId = captureLink
+    ? captureLink.href.split("/").pop()
+    : null;
+
   const captureId =
     refund.supplementary_data?.related_ids?.capture_id ||
-    event.resource?.supplementary_data?.related_ids?.capture_id;
+    event.resource?.supplementary_data?.related_ids?.capture_id ||
+    linkedCaptureId;
 
   if (!captureId) {
     throw new Error("Refund capture linkage requires investigation");
