@@ -51,6 +51,23 @@ async function captureOrder(id, env) {
   if (saved.status==="COMPLETED") return reply({status:"COMPLETED"});
   const order = await pp(env,`/v2/checkout/orders/${encodeURIComponent(id)}/capture`,{method:"POST",body:"{}"});
   const cap = order.purchase_units?.[0]?.payments?.captures?.[0];
+  
+if (!env.PAYPAL_MERCHANT_ID) {
+  throw new Error("PayPal Merchant ID missing");
+}
+
+if (
+  order.id !== id ||
+  order.purchase_units?.length !== 1 ||
+  order.purchase_units[0]?.payee?.merchant_id !==
+    env.PAYPAL_MERCHANT_ID
+) {
+  return reply(
+    { error: "PayPal order or merchant mismatch" },
+    409
+  );
+}
+
   if (order.status!=="COMPLETED" || cap?.status!=="COMPLETED") return reply({status:order.status||"PENDING"},202);
   if (cap.amount?.currency_code!==saved.currency || Number(cap.amount?.value).toFixed(2)!==saved.expected_amount)
     return reply({error:"Captured amount mismatch"},409);
