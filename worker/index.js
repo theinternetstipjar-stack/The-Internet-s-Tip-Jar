@@ -71,6 +71,16 @@ if (
   if (order.status!=="COMPLETED" || cap?.status!=="COMPLETED") return reply({status:order.status||"PENDING"},202);
   if (cap.amount?.currency_code!==saved.currency || Number(cap.amount?.value).toFixed(2)!==saved.expected_amount)
     return reply({error:"Captured amount mismatch"},409);
+  
+  const captureVerified = await verifyCapture(env, cap, id);
+
+  if (!captureVerified) {
+    return reply(
+      { error: "Capture verification failed" },
+      409
+    );
+  }
+
   await env.DB.batch([
     env.DB.prepare("UPDATE paypal_orders SET status='COMPLETED',capture_id=?,captured_at=CURRENT_TIMESTAMP WHERE order_id=?").bind(cap.id,id),
     env.DB.prepare("INSERT OR IGNORE INTO contributions (capture_id,amount,currency) VALUES (?,?,?)").bind(cap.id,saved.expected_amount,saved.currency)
