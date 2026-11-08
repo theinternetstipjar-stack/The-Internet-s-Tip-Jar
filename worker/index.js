@@ -132,7 +132,11 @@ async function webhook(request, event, env) {
     const cap=event.resource, orderId=cap.supplementary_data?.related_ids?.order_id;
     if (cap.status==="COMPLETED" && orderId) {
       const saved=await env.DB.prepare("SELECT * FROM paypal_orders WHERE order_id=?").bind(orderId).first();
-      if (saved && cap.amount?.currency_code===saved.currency && Number(cap.amount?.value).toFixed(2)===saved.expected_amount) {
+      
+if (
+  saved &&
+  await verifyCapture(env, cap, orderId)
+) {
         await env.DB.batch([
           env.DB.prepare("INSERT OR IGNORE INTO processed_webhooks (event_id,event_type) VALUES (?,?)").bind(event.id,event.event_type),
           env.DB.prepare("UPDATE paypal_orders SET status='COMPLETED',capture_id=?,captured_at=CURRENT_TIMESTAMP WHERE order_id=?").bind(cap.id,orderId),
