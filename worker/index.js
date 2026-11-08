@@ -1,6 +1,13 @@
 const headers = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 const reply = (data, status=200) => new Response(JSON.stringify(data), {status, headers});
-const base = env => env.PAYPAL_MODE === "live" ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
+
+const base = env => {
+  if (env.PAYPAL_MODE !== "sandbox") {
+    throw new Error("Only PayPal Sandbox is permitted during testing");
+  }
+
+  return "https://api-m.sandbox.paypal.com";
+};
 
 async function token(env) {
   if (!env.PAYPAL_CLIENT_ID || !env.PAYPAL_CLIENT_SECRET) throw new Error("PayPal credentials missing");
